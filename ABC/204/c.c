@@ -1,25 +1,28 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-bool	load[2000][2000] = {};
-bool	vertex_flag[2000] = {};
+#define MAX 2000
 
-bool	is_walk(int start, int goal, int n)
+bool	load[MAX][MAX];
+bool	visited[MAX];
+int	n;
+
+void	dfs(int vertex)
 {
-	if (start == goal)
-		return (true);
-	vertex_flag[start] = true;
+	if (visited[vertex])
+		return ;
+	visited[vertex] = true;
 	for (int i = 0; i < n; i++)
 	{
-		if (load[start][i] && !vertex_flag[i] && is_walk(i, goal, n))
-			return (true);
+		if (load[vertex][i])
+			dfs(i);
 	}
-	return (false);
+	return ;
 }
 
 int	main(void)
 {
-	int	n, m, a, b;
+	int	m, a, b;
 	int	ans = 0;
 
 	scanf("%d %d", &n, &m);
@@ -28,19 +31,14 @@ int	main(void)
 		scanf("%d %d", &a, &b);
 		load[a - 1][b - 1] = true;
 	}
-	//for (int i = 0; i < n; i++)
-	//	load[i][i] = true;
 	for (int i = 0; i < n; i++)
 	{
+		dfs(i);
 		for (int j = 0; j < n; j++)
 		{
-			if (is_walk(i, j, n))
-			{
-				//printf("(%d, %d)\n", i, j);
+			if (visited[j])
 				ans++;
-			}
-			for (int k = 0; k < n; k++)
-				vertex_flag[k] = false;
+			visited[j] = false;
 		}
 	}
 	printf("%d\n", ans);
