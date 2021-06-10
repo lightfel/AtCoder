@@ -7,40 +7,31 @@ int	main()
 
 	cin >> h >> w;
 
-	vector<string> board(h);
+	vector<string>	board(h);
+	vector<int>	dx = {-1, -1, -1, 0, 0, 1, 1, 1};
+	vector<int>	dy = {-1, 0, 1, -1, 1, -1, 0, 1};
 	for (int i = 0; i < h; i++)
 		cin >> board.at(i);
 	for (int i = 0; i < h; i++)
 	{
 		for (int j = 0; j < w; j++)
 		{
-			if (board.at(i).at(j) != '#')
-				board.at(i).at(j) = '0';
-		}
-	}
-	for (int i = 0; i < h; i++)
-	{
-		for (int j = 0; j < w; j++)
-		{
 			if (board.at(i).at(j) == '#')
+				continue;
+			int nx, ny;
+			int num = 0;
+			for (int k = 0; k < 8; k++)
 			{
-				if (i > 0 && j > 0 && board.at(i - 1).at(j - 1) != '#')
-					board.at(i - 1).at(j - 1)++;
-				if (i > 0 && board.at(i - 1).at(j) != '#')
-					board.at(i - 1).at(j)++;
-				if (i > 0 && j < w - 1 && board.at(i - 1).at(j + 1) != '#')
-					board.at(i - 1).at(j + 1)++;
-				if (j > 0 && board.at(i).at(j - 1) != '#')
-					board.at(i).at(j - 1)++;
-				if (j < w - 1 && board.at(i).at(j + 1) != '#')
-					board.at(i).at(j + 1)++;
-				if (i < h - 1 && j > 0 && board.at(i + 1).at(j - 1) != '#')
-					board.at(i + 1).at(j - 1)++;
-				if (i < h - 1 && board.at(i + 1).at(j) != '#')
-					board.at(i + 1).at(j)++;
-				if (i < h - 1 && j < w - 1 && board.at(i + 1).at(j + 1) != '#')
-					board.at(i + 1).at(j + 1)++;
+				nx = i + dx.at(k);
+				ny = j + dy.at(k);
+				if (nx < 0 || nx >= h)
+					continue;
+				if (ny < 0 || ny >= w)
+					continue;
+				if (board.at(nx).at(ny) == '#')
+					num++;
 			}
+			board.at(i).at(j) = char('0' + num);
 		}
 	}
 	for (int i = 0; i < h; i++)
